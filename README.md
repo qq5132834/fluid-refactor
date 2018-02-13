@@ -1,13 +1,10 @@
 ## 欢迎参加平安普惠面试-重构
-You will find here an implementation that supports the sending and receiving of messages from an Apache 
-Active MQ queue broker.  This class was written to simplify sending and receiving messages during automated 
-system level testing.  The core use case is:
+项目中有一个支持Active MQ代理发送和接收消息的实现类，为简化在自动系统级测试中消息的发送和接收的过程。其主要用途为：
+  - 部署应用程序
+  - 启动应用程序
+  - 通过测试用例来确保消息的发收正常
 
-  - deploy the application
-  - start the application
-  - test the application by sending messages and asserting received messages
-  
-A typical use in a test might look something like:
+在测试中的典型用法如下所示：
 
     @Test
     public void systemProcessesTradesAndCreatesAccountRequests(){
@@ -18,14 +15,12 @@ A typical use in a test might look something like:
         assertThat(accountingMessage).isEqualTo(expectedAccountingRequestMessage);
     }
 
-At first glance this looks like a nice API, and it satisfies the initial problem.  In fact its so good we want to use
-this API as the main API for all of the application messaging (not just for our testing).  When we consider the new use case and we consider the
-SOLID principles we can see a few problems.  Some thoughts:
+这个API能实现最初的需求。我们希望这个API不仅仅适用于该测试，而是能在所有应用程序消息传递中使用。然而，当我们使用在别的用例或考虑SOLID原则时，会发现一些问题：
+  - 如果想要使用不同的代理技术，会发现其耦合度很高（OCP）
+  - 如果想让一个类只做一件事（SRP），会发现其中实现了很多其他功能。 
 
-  - if I wanted to use a different broker technology the coupling here is tight (OCP)
-  - if I considered that classes should only do one thing (SRP) I can see a lot of responsibilities in the classes
+若想得到一个流式API，可参考如下结构：
 
-If I wanted a fluid API I would probably want to say something like:
 
     @Test
     public void blah() {
@@ -42,24 +37,23 @@ If I wanted a fluid API I would probably want to say something like:
             .andThen().waitForAMessageOn(accountingQueue);
     }
 
-In the meantime we need to consider backwards compatibility of the utility: imagine a large number of hard to contact 
-consumers of these classes who would want to continue using the existing API (albeit in a deprecated state).
+同时，我们需保证新API的向下兼容性。
  
 
 ## 挑战
-Understand the API and consider how we use it in the testing context. Consider the use of this in application code (we use a dependency injection framework, if its at all relevant to you). Please refactor this implementation taking into account the above. Additionally, please make sure your solution is accompanied by comments in any form that describe a step-by-step refactorings, so we can understand the way you were thinking.
+理解该API并细想其在测试环境和应用程序代码的应用(如果需要，我们可以使用依赖注入)。请您重构此项目。另外，请您在代码上标注相关的注释，以便我们理解您的思路。
 
-Once you have finished and think this is good enough for consideration in the production environment, please send us back the implementation plus any comments or thoughts you have for this.  If your submission is strong enough we will invite you to come and meet us and we can discuss your thoughts in a pair code review.
+如果您完成了题目并认为您的答案可行，那么请把您的答案和相关意见或想法提交给我们。若您通过测试，我们将会邀请您与我们见面并一起探讨相关内容。
 
-We look forward to receiving your submission.
 
 
 ## 评分标准
-* All Test Cases should be passed successfully.
-* Well comprehension is a mandatory, miss or misunderstanding instruction cloud be considered failure.
-* A good coding design and habit are required. ex: to comment properly, using design patten in the right way, etc.
-* To commit your answers before the deadline.
+  - 所有测试用例需无错执行。
+  - 需正确理解题目要求。
+  - 良好的编码习惯及面向对象的设计思想。
+  - 请在截止日期前提交您的答案。
+
 
 
 ## 其他
-Please fill up the file [FEEDBACK.md](FEEDBACK.md)
+请填写文件 [FEEDBACK.md](FEEDBACK.md)
