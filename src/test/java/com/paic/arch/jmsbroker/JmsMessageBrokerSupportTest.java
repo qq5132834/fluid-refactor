@@ -1,10 +1,12 @@
 package com.paic.arch.jmsbroker;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.paic.arch.jmsService.impl.ReceiveTextMessage;
 
 public class JmsMessageBrokerSupportTest {
 
@@ -23,7 +25,7 @@ public class JmsMessageBrokerSupportTest {
     public static void teardown() throws Exception {
         JMS_SUPPORT.stopTheRunningBroker();
     }
-
+    
     @Test
     public void sendsMessagesToTheRunningBroker() throws Exception {
         JmsMessageBrokerSupport.bindToBrokerAtUrl(REMOTE_BROKER_URL)
@@ -40,7 +42,7 @@ public class JmsMessageBrokerSupportTest {
         assertThat(receivedMessage).isEqualTo(MESSAGE_CONTENT);
     }
 
-    @Test(expected = JmsMessageBrokerSupport.NoMessageReceivedException.class)
+    @Test(expected = ReceiveTextMessage.NoMessageReceivedException.class)
     public void throwsExceptionWhenNoMessagesReceivedInTimeout() throws Exception {
         JmsMessageBrokerSupport.bindToBrokerAtUrl(REMOTE_BROKER_URL).retrieveASingleMessageFromTheDestination(TEST_QUEUE, 1);
     }
