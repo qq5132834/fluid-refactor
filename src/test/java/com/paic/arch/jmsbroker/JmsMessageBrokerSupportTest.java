@@ -10,7 +10,6 @@ import com.paic.arch.jmsService.impl.ReceiveTextMessage;
 
 public class JmsMessageBrokerSupportTest {
 
-	
     public static final String TEST_QUEUE = "MY_TEST_QUEUE";
     public static final String MESSAGE_CONTENT = "Lorem blah blah";
     private static JmsMessageBrokerSupport JMS_SUPPORT;
