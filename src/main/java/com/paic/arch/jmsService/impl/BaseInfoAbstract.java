@@ -1,6 +1,4 @@
-/**
- * 弘稼MIS辅助Tomcat系统
- */
+
 package com.paic.arch.jmsService.impl;
 
 import static org.slf4j.LoggerFactory.getLogger;
